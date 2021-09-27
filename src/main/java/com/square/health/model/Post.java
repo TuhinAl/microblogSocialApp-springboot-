@@ -21,6 +21,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(length = 65535, columnDefinition="TEXT")
     private String post; // need to add constraint Text
     private Long approvedBy;
     private Byte isPublished;

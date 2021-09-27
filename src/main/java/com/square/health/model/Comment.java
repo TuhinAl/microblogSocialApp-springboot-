@@ -21,6 +21,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(length = 65535, columnDefinition="TEXT")
     private String comment;
     //private Long postId;
     private Long bloggerId;
