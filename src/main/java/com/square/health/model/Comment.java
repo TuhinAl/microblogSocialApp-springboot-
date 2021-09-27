@@ -1,5 +1,10 @@
 package com.square.health.model;
 
+import javafx.geometry.Pos;
+import lombok.Data;
+import lombok.ToString;
+
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -7,13 +12,27 @@ import java.util.Date;
  * @project health
  * @created 9/27/21 at 11:38 PM
  **/
-
+@Entity
+@Table(name = "comment")
+@Data
+@ToString
 public class Comment {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String comment;
-    private Long postId;
+    //private Long postId;
     private Long bloggerId;
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = false, updatable = false)
     private Date createDate;
-    
+
+
+    @ManyToOne
+    @JoinColumn(name = "post_id",
+            referencedColumnName = "id",
+            nullable = false)
+    private Post post;
+
 }
