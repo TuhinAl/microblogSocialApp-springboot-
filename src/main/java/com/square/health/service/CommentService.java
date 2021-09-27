@@ -1,5 +1,8 @@
 package com.square.health.service;
 
+import com.square.health.dto.CommentDTO;
+import com.square.health.util.error_handle.ErrorDetails;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,4 +13,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface CommentService {
+
+    ResponseEntity<CommentDTO> getAllComment(Long commentId);
+
+
 }
