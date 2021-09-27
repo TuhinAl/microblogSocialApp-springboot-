@@ -21,6 +21,7 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    private String email;
     private String password;
     @Temporal(TemporalType.DATE)
     @Column(nullable = false, updatable = false)
