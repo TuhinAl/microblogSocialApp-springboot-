@@ -8,6 +8,7 @@ public class MicroblogappApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MicroblogappApplication.class, args);
+		System.out.println("**** Application Running *****");
 	}
 
 }
