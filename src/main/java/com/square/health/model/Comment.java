@@ -24,7 +24,7 @@ public class Comment {
     @Column(length = 65535, columnDefinition="TEXT")
     private String comment;
     //private Long postId;
-    private Long bloggerId;
+    private Long commentBy;
     @Temporal(TemporalType.DATE)
     @Column(nullable = false, updatable = false)
     private Date createDate;

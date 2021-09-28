@@ -2,6 +2,7 @@ package com.square.health.service;
 
 import com.square.health.dto.CommentDTO;
 import com.square.health.util.error_handle.ErrorDetails;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,13 @@ import org.springframework.stereotype.Service;
 @Service
 public interface CommentService {
 
-    ResponseEntity<CommentDTO> getAllComment(Long commentId);
+    Page<CommentDTO> getAllCommentOfSpecificPost(Long postId, int page, int size);
+
+    Page<CommentDTO> getAllCommentOfSpecificBlogger(Long bloggerId, int page, int size);
+
+    Page<ErrorDetails> updateComment(Long commentId);
+
+    Page<ErrorDetails> deleteComment(Long commentId);
 
 
 }

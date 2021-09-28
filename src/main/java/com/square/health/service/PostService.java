@@ -1,8 +1,11 @@
 package com.square.health.service;
 
 import com.square.health.dto.PostDTO;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Alauddin Tuhin
@@ -12,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface PostService {
 
-    ResponseEntity<PostDTO> getAllPost();
+    Page<PostDTO> getAllActivatePost(int page, int size);
 
-    ResponseEntity<PostDTO> getAllActivePost();
+    Page<PostDTO> getAllDeactivatePost(int page, int size);
 }
