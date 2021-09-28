@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author Alauddin Tuhin
  * @project health
@@ -19,9 +21,9 @@ public interface CommentService {
 
     Page<CommentDTO> getAllCommentOfSpecificBlogger(Long bloggerId, int page, int size);
 
-    Page<ErrorDetails> updateComment(Long commentId);
+    ResponseEntity<ErrorDetails> updateComment(Long commentId, String com);
 
-    Page<ErrorDetails> deleteComment(Long commentId);
+    ResponseEntity<ErrorDetails> deleteComment(Long commentId);
 
 
 }

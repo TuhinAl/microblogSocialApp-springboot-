@@ -22,7 +22,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(length = 65535, columnDefinition="TEXT")
-    private String comment;
+    private String comments;
     //private Long postId;
     private Long commentBy;
     @Temporal(TemporalType.DATE)

@@ -10,7 +10,6 @@ import com.square.health.repository.PostRepository;
 import com.square.health.service.AdminService;
 import com.square.health.util.error_handle.BadRequestException;
 import com.square.health.util.error_handle.ErrorDetails;
-import com.square.health.util.error_handle.GlobalExceptionHandler;
 import com.square.health.util.error_handle.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

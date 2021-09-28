@@ -1,5 +1,6 @@
 package com.square.health.mapper;
 
+import com.square.health.dto.CommentDTO;
 import com.square.health.model.Comment;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,11 @@ public class CommentMapper {
         comment.setCommentBy(bloggerId);
 
         return comment;
+    }
+
+    public CommentDTO commentResponse(Comment comment) {
+        CommentDTO dto = new CommentDTO();
+        dto.setComment(comment.getComment());
+        return dto;
     }
 }
