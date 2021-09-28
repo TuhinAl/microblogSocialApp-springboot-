@@ -35,7 +35,8 @@ public class Blogger {
     private Date createDate;
     private Enum role;
     private Long approvedBy;
-    private Byte isActive;
+    private Integer approved;
+    private Integer isActive;
 
     /**
      * Joining Table: Blogger may have many Posts

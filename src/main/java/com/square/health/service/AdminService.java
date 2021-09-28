@@ -15,11 +15,11 @@ public interface AdminService {
 
     ResponseEntity<ErrorDetails> registerAdmin(AdminDTO admin);
 
-    ResponseEntity<ErrorDetails> approveBlogger(Long bloggerId);
+    ResponseEntity<ErrorDetails> approveBlogger(Long adminId, Long bloggerId);
 
-    ResponseEntity<ErrorDetails> deactivateBlogger(Long bloggerId, Boolean status);
+    ResponseEntity<ErrorDetails> deactivateBlogger(Long bloggerId, Integer status);
 
-    ResponseEntity<ErrorDetails> approveBlogPost(Long postId);
+    ResponseEntity<ErrorDetails> approveBlogPost(Long adminId, Long postId);
 
     ResponseEntity<ErrorDetails> deleteBlogPost(Long postId);
 

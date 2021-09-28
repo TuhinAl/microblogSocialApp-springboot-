@@ -10,9 +10,9 @@ import lombok.Data;
 @Data
 public class ErrorDetails {
 
-    private final int status;
-    private final String message;
-    private final long timestamp;
+    private  int status;
+    private  String message;
+    private long timestamp;
 
     public ErrorDetails(int status, String message, long timestamp) {
         this.status = status;
