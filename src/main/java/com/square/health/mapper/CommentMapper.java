@@ -17,7 +17,7 @@ public class CommentMapper {
 
     public Comment saveComment(String comByBlogger, Long bloggerId) {
         Comment comment = new Comment();
-        comment.setComment(comByBlogger);
+        comment.setComments(comByBlogger);
         comment.setCreateDate(new Date());
         comment.setCommentBy(bloggerId);
 
@@ -26,7 +26,7 @@ public class CommentMapper {
 
     public CommentDTO commentResponse(Comment comment) {
         CommentDTO dto = new CommentDTO();
-        dto.setComment(comment.getComment());
+        dto.setComment(comment.getComments());
         return dto;
     }
 }
