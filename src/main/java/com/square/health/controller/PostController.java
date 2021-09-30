@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.xml.ws.Action;
-
 /**
  * @author Alauddin Tuhin
  * @project health
@@ -18,7 +16,7 @@ import javax.xml.ws.Action;
  **/
 
 @RestController
-@RequestMapping("/api/v1/post")
+@RequestMapping("/square-health/api/v1/post")
 public class PostController {
 
     private final PostService postService;

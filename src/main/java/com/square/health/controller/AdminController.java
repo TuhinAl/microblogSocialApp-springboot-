@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * @created 9/28/21 at 1:21 AM
  **/
 @RestController
-@RequestMapping("/api/v1/admin")
+@RequestMapping("/square-health/api/v1/admin")
 public class AdminController {
 
     private final AdminService adminService;
@@ -23,7 +23,7 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @PostMapping("/admin")
+    @PostMapping("/register")
     ResponseEntity<ErrorDetails> registerAdmin(@RequestBody AdminDTO admin) {
         return adminService.registerAdmin(admin);
     }

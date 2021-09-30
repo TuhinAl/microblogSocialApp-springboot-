@@ -2,6 +2,7 @@ package com.square.health.mapper;
 
 import com.square.health.dto.BloggerDTO;
 import com.square.health.model.Blogger;
+import com.square.health.model.Role;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,6 +19,7 @@ public class BloggerMapper {
         blogger.setLastName(dto.getLastName());
         blogger.setEmail(dto.getEmail());
         blogger.setPassword(dto.getPassword());
+        blogger.setRole(Role.BLOGGER);
         blogger.setIsActive(0);
         blogger.setApproved(0);
         return blogger;

@@ -4,6 +4,7 @@ import com.square.health.dto.AdminDTO;
 import com.square.health.mapper.AdminMapper;
 import com.square.health.model.Blogger;
 import com.square.health.model.Post;
+import com.square.health.model.Role;
 import com.square.health.repository.AdminRepository;
 import com.square.health.repository.BloggerRepository;
 import com.square.health.repository.PostRepository;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * @author Alauddin Tuhin
@@ -51,15 +54,23 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public ResponseEntity<ErrorDetails> approveBlogger(Long adminId, Long bloggerId) {
         Blogger blogger = bloggerRepository.getById(bloggerId);
-        if (blogger == null) {
+        System.out.println("===Approved Blogger====: " + blogger);
+        if (blogger.getId() == null) {
             throw new ResourceNotFoundException("Blogger With This ID is not found");
         }
-        if (blogger.getApproved() == 0) {
+        if (blogger.getApproved().equals(0)) {
             blogger.setApproved(1);
             blogger.setApprovedBy(adminId);
+            blogger.setIsActive(1);
+            blogger.setCreateDate(new Date());
+            blogger.setRole(Role.BLOGGER);
+
+
+
         }else {
             throw new BadRequestException("This Blogger already approved");
         }
+
         bloggerRepository.save(blogger);
 
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),

@@ -17,7 +17,7 @@ public class AdminMapper {
 
    public Admin registerMap(AdminDTO dto) {
         Admin admin = new Admin();
-        admin.setName(admin.getName());
+        admin.setName(dto.getName());
         admin.setEmail(dto.getEmail());
         admin.setPassword(dto.getPassword());
         admin.setCreateDate(new Date());

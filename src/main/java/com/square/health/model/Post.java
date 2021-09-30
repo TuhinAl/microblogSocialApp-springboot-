@@ -24,6 +24,8 @@ public class Post {
     @Column(length = 65535, columnDefinition="TEXT")
     private String post; // need to add constraint Text
     private Long approvedBy;
+    private Long likes;
+    private Long dislikes;
     private Integer isPublished;
     @Temporal(TemporalType.DATE)
     @Column(nullable = false, updatable = false)

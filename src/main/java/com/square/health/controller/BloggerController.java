@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  **/
 
 @RestController
-@RequestMapping("/api/v1/blogger")
+@RequestMapping("/square-health/api/v1/blogger")
 public class BloggerController {
 
     private final BloggerService bloggerService;
@@ -27,7 +27,7 @@ public class BloggerController {
 
     @PostMapping("/register")
     ResponseEntity<ErrorDetails> registerBlogger(@RequestBody BloggerDTO blogger) {
-      return   bloggerService.registerBlogger(blogger);
+      return  bloggerService.registerBlogger(blogger);
     }
 
     @PostMapping("/add/comment")

@@ -5,6 +5,7 @@ import com.square.health.dto.PostDTO;
 import com.square.health.mapper.BloggerMapper;
 import com.square.health.mapper.CommentMapper;
 import com.square.health.mapper.PostMapper;
+import com.square.health.model.Blogger;
 import com.square.health.model.Post;
 import com.square.health.repository.BloggerRepository;
 import com.square.health.repository.CommentRepository;
@@ -62,7 +63,18 @@ public class BloggerServiceImpl implements BloggerService {
     @Override
     public ResponseEntity<ErrorDetails> addCommentToPost(Long bloggerId, String comment) {
 
-        commentRepository.save(commentMapper.saveComment(comment, bloggerId));
+        Blogger blogger = bloggerRepository.getById(bloggerId);
+        if (blogger == null) {
+            throw new ResourceNotFoundException("Blogger With This ID is not found");
+        }
+
+        if (blogger.getApproved() == 1 && blogger.getIsActive() == 1) {
+            commentRepository.save(commentMapper.saveComment(comment, bloggerId));
+        } else {
+            throw new BadRequestException("Invalid Blogger try to post a comment");
+        }
+
+
 
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
                 "Comment added to the post", System.currentTimeMillis()),
@@ -72,7 +84,18 @@ public class BloggerServiceImpl implements BloggerService {
     @Override
     public ResponseEntity<ErrorDetails> addPost(PostDTO dto) {
 
-        postRepository.save(postMapper.postSave(dto));
+        Blogger blogger = bloggerRepository.getById(dto.getBloggerId());
+        System.out.println("Add post: blogger" + blogger);
+        if (blogger.getId() == null) {
+            throw new ResourceNotFoundException("Blogger With This ID is not found");
+        }
+
+        if (blogger.getApproved() == 1 && blogger.getIsActive() == 1) {
+            postRepository.save(postMapper.postSave(dto));
+        } else {
+            throw new BadRequestException("Invalid Blogger try to post a Blog-Post");
+        }
+
 
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
                 "Posted successful", System.currentTimeMillis()),
@@ -82,13 +105,21 @@ public class BloggerServiceImpl implements BloggerService {
     @Override
     public ResponseEntity<ErrorDetails> updatePost(Long postId, PostDTO dto) {
 
+        Blogger blogger = bloggerRepository.getById(dto.getBloggerId());
+
         Post post = postRepository.getById(postId);
+
         if (post == null) {
             throw new ResourceNotFoundException("Post not found");
         }
+        if (blogger.getApproved() == 1 && blogger.getIsActive() == 1) {
+            post.setPost(dto.getPost());
+            postRepository.save(post);
+        }else{
+            throw new BadRequestException("Invalid Blogger try update a Blog-Post");
+        }
 
-        post.setPost(dto.getPost());
-        postRepository.save(post);
+
 
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
                 "Post updated successfully", System.currentTimeMillis()),
@@ -100,7 +131,7 @@ public class BloggerServiceImpl implements BloggerService {
 
         Post post = postRepository.getById(postId);
         if (post == null) {
-            throw new ResourceNotFoundException("POst not found");
+            throw new ResourceNotFoundException("Post not found");
         }
         postRepository.delete(post);
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),

@@ -29,7 +29,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<?> handleIdNotFoundException(BadRequestException badRequestException) {
-        System.out.println("Inside bad request exception method");
         ErrorDetails globalResponse = new ErrorDetails(HttpStatus.BAD_REQUEST.value(),
                 badRequestException.getMessage(), System.currentTimeMillis());
         return new ResponseEntity<>(globalResponse, HttpStatus.BAD_REQUEST);

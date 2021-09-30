@@ -30,9 +30,11 @@ public class Blogger {
     private String email;
     @Column(nullable = false)
     private String password;
+
     @Temporal(TemporalType.DATE)
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     private Date createDate;
+
     private Enum role;
     private Long approvedBy;
     private Integer approved;

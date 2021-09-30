@@ -11,6 +11,6 @@ import lombok.ToString;
 @Data
 @ToString
 public class PostDTO {
-    private String bloggerId;
+    private Long bloggerId;
     private String post;
 }
