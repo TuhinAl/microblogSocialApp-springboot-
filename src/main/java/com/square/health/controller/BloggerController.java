@@ -53,4 +53,14 @@ public class BloggerController {
         return bloggerService.deletePost(postId);
     }
 
+    @PutMapping("/like/post/{postId}")
+    ResponseEntity<ErrorDetails> likePost(@PathVariable("postId") Long postId) {
+        return bloggerService.likePost(postId);
+    }
+
+    @PutMapping("/dislike/post/{postId}")
+    ResponseEntity<ErrorDetails> dislikePost(@PathVariable("postId") Long postId) {
+        return bloggerService.dislikePost(postId);
+    }
+
 }

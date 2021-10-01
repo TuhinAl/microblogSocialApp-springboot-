@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+import static com.square.health.util.StaticData.*;
+
 /**
  * @author Alauddin Tuhin
  * @project health
@@ -47,16 +49,17 @@ public class AdminServiceImpl implements AdminService {
 
         adminRepository.save(adminMapper.registerMap(admin));
 
+
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
-                "admin Registered successfully", System.currentTimeMillis()), HttpStatus.OK);
+                ADMIN_REGISTER_MESSAGE, System.currentTimeMillis()), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<ErrorDetails> approveBlogger(Long adminId, Long bloggerId) {
         Blogger blogger = bloggerRepository.getById(bloggerId);
-        System.out.println("===Approved Blogger====: " + blogger);
         if (blogger.getId() == null) {
-            throw new ResourceNotFoundException("Blogger With This ID is not found");
+
+            throw new ResourceNotFoundException(INVALID_BLOGGER_MESSAGE);
         }
         if (blogger.getApproved().equals(0)) {
             blogger.setApproved(1);
@@ -68,13 +71,15 @@ public class AdminServiceImpl implements AdminService {
 
 
         }else {
-            throw new BadRequestException("This Blogger already approved");
+
+            throw new BadRequestException(BLOGGER_EXIST_MESSAGE);
         }
 
         bloggerRepository.save(blogger);
 
+
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
-                "This blogger approved by Admin", System.currentTimeMillis()),
+                BLOGGER_APPROVED_BY_ADMIN, System.currentTimeMillis()),
                 HttpStatus.OK);
     }
 
@@ -83,8 +88,8 @@ public class AdminServiceImpl implements AdminService {
 
         Blogger blogger = bloggerRepository.getById(bloggerId);
 
-        if (blogger == null) {
-            throw new ResourceNotFoundException("Blogger With This ID is not found");
+        if (blogger.getId() == null) {
+            throw new ResourceNotFoundException(INVALID_BLOGGER_MESSAGE);
         }
         if (status == 0) {
             blogger.setIsActive(1);
@@ -93,8 +98,9 @@ public class AdminServiceImpl implements AdminService {
         }
         bloggerRepository.save(blogger);
 
+
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
-                "This blogger activated/deactivated by Admin", System.currentTimeMillis()),
+                BLOGGER_ACTIVATE_OR_DEACTIVATE, System.currentTimeMillis()),
                 HttpStatus.OK);
     }
 
@@ -103,16 +109,18 @@ public class AdminServiceImpl implements AdminService {
 
         Post post = postRepository.getById(postId);
 
-        if (post == null) {
-            throw new ResourceNotFoundException("Post is not found");
+        if (post.getId() == null) {
+
+            throw new ResourceNotFoundException(POST_NOT_EXIST);
         }
         post.setIsPublished(1);
         post.setApprovedBy(adminId);
         postRepository.save(post);
 
 
+
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
-                "Approved post by Admin", System.currentTimeMillis()),
+                POST_APPROVED_MESSAGE, System.currentTimeMillis()),
                 HttpStatus.OK);
     }
 
@@ -121,13 +129,14 @@ public class AdminServiceImpl implements AdminService {
 
         Post post = postRepository.getById(postId);
 
-        if (post == null) {
-            throw new ResourceNotFoundException("Post is not found");
+        if (post.getId() == null) {
+            throw new ResourceNotFoundException(POST_NOT_EXIST);
         }
         postRepository.delete(post);
 
+
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
-                "Post deleted by Admin", System.currentTimeMillis()),
+                POST_REMOVED_BY_ADMIN, System.currentTimeMillis()),
                 HttpStatus.OK);
     }
 }

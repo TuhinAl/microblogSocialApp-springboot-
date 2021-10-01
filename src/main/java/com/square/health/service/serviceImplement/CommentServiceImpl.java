@@ -5,6 +5,7 @@ import com.square.health.mapper.CommentMapper;
 import com.square.health.model.Comment;
 import com.square.health.repository.CommentRepository;
 import com.square.health.service.CommentService;
+import com.square.health.util.error_handle.BadRequestException;
 import com.square.health.util.error_handle.ErrorDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.square.health.util.StaticData.*;
 
 /**
  * @author Alauddin Tuhin
@@ -38,6 +41,10 @@ public class CommentServiceImpl implements CommentService {
 
         Pageable pageable = PageRequest.of(page, size);
 
+        if (postId == null) {
+            throw new BadRequestException(EMPTY_POST_ID);
+        }
+
         Page<Comment> comment = commentRepository.findCommentByPostId(postId, pageable);
 
         return comment.map(com -> commentMapper.commentResponse(com));
@@ -45,6 +52,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Page<CommentDTO> getAllCommentOfSpecificBlogger(Long bloggerId, int page, int size) {
+
+        if (bloggerId == null) {
+            throw new BadRequestException(EMPTY_BLOGGER_ID);
+        }
 
         Pageable pageable = PageRequest.of(page, size);
 
@@ -56,22 +67,32 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public ResponseEntity<ErrorDetails> updateComment(Long commentId, String com) {
 
+        if (commentId == null) {
+            throw new BadRequestException(EMPTY_COMMENT_ID);
+        }
+
         Comment comment = commentRepository.getById(commentId);
         comment.setComments(com);
         commentRepository.save(comment);
 
+
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
-                "Comment updated", System.currentTimeMillis()),
+                COMMENT_UPDATED, System.currentTimeMillis()),
                 HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<ErrorDetails> deleteComment(Long commentId) {
+
+        if (commentId == null) {
+            throw new BadRequestException(EMPTY_COMMENT_ID);
+        }
         Comment comment = commentRepository.getById(commentId);
 
         commentRepository.delete(comment);
+
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
-                "completed deleted", System.currentTimeMillis()),
+                COMMENT_DELETED, System.currentTimeMillis()),
                 HttpStatus.OK);
     }
 

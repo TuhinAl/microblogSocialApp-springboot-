@@ -19,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import static com.square.health.util.StaticData.*;
+
 /**
  * @author Alauddin Tuhin
  * @project health
@@ -50,13 +52,15 @@ public class BloggerServiceImpl implements BloggerService {
     public ResponseEntity<ErrorDetails> registerBlogger(BloggerDTO blogger) {
 
         if (blogger == null) {
-            throw new BadRequestException("Empty logger Infos received");
+
+            throw new BadRequestException(EMPTY_REGISTRATION_INFO);
         }
 
         bloggerRepository.save(bloggerMapper.register(blogger));
 
+
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
-                "Blogger Registered successfully", System.currentTimeMillis()),
+                BLOGGER_REGISTRATION_SUCCESS_MESSAGE, System.currentTimeMillis()),
                 HttpStatus.OK);
     }
 
@@ -64,20 +68,22 @@ public class BloggerServiceImpl implements BloggerService {
     public ResponseEntity<ErrorDetails> addCommentToPost(Long bloggerId, String comment) {
 
         Blogger blogger = bloggerRepository.getById(bloggerId);
-        if (blogger == null) {
-            throw new ResourceNotFoundException("Blogger With This ID is not found");
+        if (blogger.getId() == null) {
+
+            throw new ResourceNotFoundException(INVALID_BLOGGER_ID);
         }
 
         if (blogger.getApproved() == 1 && blogger.getIsActive() == 1) {
             commentRepository.save(commentMapper.saveComment(comment, bloggerId));
         } else {
-            throw new BadRequestException("Invalid Blogger try to post a comment");
+
+            throw new BadRequestException(INACTIVE_BLOGGER_API_ACCESS_DENY);
         }
 
 
 
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
-                "Comment added to the post", System.currentTimeMillis()),
+                COMMENT_ADDED_TO_POST, System.currentTimeMillis()),
                 HttpStatus.OK);
     }
 
@@ -85,21 +91,20 @@ public class BloggerServiceImpl implements BloggerService {
     public ResponseEntity<ErrorDetails> addPost(PostDTO dto) {
 
         Blogger blogger = bloggerRepository.getById(dto.getBloggerId());
-        System.out.println("Add post: blogger" + blogger);
+
         if (blogger.getId() == null) {
-            throw new ResourceNotFoundException("Blogger With This ID is not found");
+            throw new ResourceNotFoundException(INVALID_BLOGGER_ID);
         }
 
         if (blogger.getApproved() == 1 && blogger.getIsActive() == 1) {
 
             postRepository.save(postMapper.postSave(dto, blogger));
         } else {
-            throw new BadRequestException("Invalid Blogger try to post a Blog-Post");
+            throw new BadRequestException(INACTIVE_BLOGGER_API_ACCESS_DENY);
         }
 
-
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
-                "Posted successful", System.currentTimeMillis()),
+                STATUS_POSTED, System.currentTimeMillis()),
                 HttpStatus.OK);
     }
 
@@ -110,20 +115,20 @@ public class BloggerServiceImpl implements BloggerService {
 
         Post post = postRepository.getById(postId);
 
-        if (post == null) {
-            throw new ResourceNotFoundException("Post not found");
+        if (post.getId() == null) {
+            throw new ResourceNotFoundException(POST_NOT_EXIST);
         }
         if (blogger.getApproved() == 1 && blogger.getIsActive() == 1) {
             post.setPost(dto.getPost());
             postRepository.save(post);
         }else{
-            throw new BadRequestException("Invalid Blogger try update a Blog-Post");
+            throw new BadRequestException(INACTIVE_BLOGGER_API_ACCESS_DENY);
         }
 
 
 
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
-                "Post updated successfully", System.currentTimeMillis()),
+                POST_UPDATED_MESSAGE, System.currentTimeMillis()),
                 HttpStatus.OK);
     }
 
@@ -131,12 +136,45 @@ public class BloggerServiceImpl implements BloggerService {
     public ResponseEntity<ErrorDetails> deletePost(Long postId) {
 
         Post post = postRepository.getById(postId);
-        if (post == null) {
-            throw new ResourceNotFoundException("Post not found");
+        if (post.getId() == null) {
+            throw new ResourceNotFoundException(POST_NOT_EXIST);
         }
         postRepository.delete(post);
+
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
-                "Post updated successfully", System.currentTimeMillis()),
+                POST_DELETED, System.currentTimeMillis()),
+                HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<ErrorDetails> likePost(Long postId) {
+        Post post = postRepository.getById(postId);
+        if (post.getId() == null) {
+            throw new ResourceNotFoundException(POST_NOT_EXIST);
+        }
+        Long likes = post.getLikes();
+        post.setLikes(likes + 1);
+        postRepository.save(post);
+
+
+        return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
+                POST_LIKED, System.currentTimeMillis()),
+                HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<ErrorDetails> dislikePost(Long postId) {
+        Post post = postRepository.getById(postId);
+        if (post.getId() == null) {
+            throw new ResourceNotFoundException(POST_NOT_EXIST);
+        }
+        Long dislikes = post.getDislikes();
+        post.setDislikes(dislikes + 1);
+        postRepository.save(post);
+
+
+        return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
+                DISLIKED_POST, System.currentTimeMillis()),
                 HttpStatus.OK);
     }
 }

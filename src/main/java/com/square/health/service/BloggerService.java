@@ -25,6 +25,11 @@ public interface BloggerService {
 
     ResponseEntity<ErrorDetails> deletePost(Long postId);
 
+    ResponseEntity<ErrorDetails> likePost(Long postId);
+
+    ResponseEntity<ErrorDetails> dislikePost(Long postId);
+
+
 
 
 }
