@@ -1,13 +1,11 @@
 package com.square.health.controller;
 
 import com.square.health.dto.PostDTO;
+import com.square.health.dto.PostResponseDTO;
 import com.square.health.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Alauddin Tuhin
@@ -35,4 +33,12 @@ public class PostController {
     Page<PostDTO> getAllDeactivatePost(@RequestParam int page, @RequestParam int size) {
         return postService.getAllActivatePost(page, size);
     }
+
+
+    @GetMapping("/all/comments/{postId}")
+    PostResponseDTO getPostWithComments(@PathVariable("postId") Long postId) {
+
+        return postService.getPostWithComments(postId);
+    }
+
 }

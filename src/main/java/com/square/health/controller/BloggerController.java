@@ -25,7 +25,7 @@ public class BloggerController {
         this.bloggerService = bloggerService;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/register")//---OK
     ResponseEntity<ErrorDetails> registerBlogger(@RequestBody BloggerDTO blogger) {
       return  bloggerService.registerBlogger(blogger);
     }
@@ -36,7 +36,7 @@ public class BloggerController {
         return bloggerService.addCommentToPost(bloggerId, comment);
     }
 
-    @PostMapping("/add/post")
+    @PostMapping("/add/post") //---OK
     ResponseEntity<ErrorDetails> addPost(@RequestBody PostDTO dto) {
         return bloggerService.addPost(dto);
     }

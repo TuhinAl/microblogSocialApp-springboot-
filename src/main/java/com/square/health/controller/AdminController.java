@@ -23,12 +23,12 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/register") //----OK
     ResponseEntity<ErrorDetails> registerAdmin(@RequestBody AdminDTO admin) {
         return adminService.registerAdmin(admin);
     }
 
-    @PostMapping("/approve/{bloggerId}")
+    @PostMapping("/approve/{bloggerId}") //----OK
     ResponseEntity<ErrorDetails> approveBlogger(@RequestParam Long adminId,
                                                 @PathVariable("bloggerId") Long bloggerId) {
         return adminService.approveBlogger(adminId, bloggerId);
@@ -40,7 +40,7 @@ public class AdminController {
         return adminService.deactivateBlogger(bloggerId, status);
     }
 
-    @PostMapping("/approved/post/{postId}")
+    @PostMapping("/approved/post/{postId}")  //----OK
     ResponseEntity<ErrorDetails> approveBlogPost(@RequestParam Long adminId,
                                                  @PathVariable("postId") Long postId) {
         return adminService.approveBlogPost(adminId, postId);

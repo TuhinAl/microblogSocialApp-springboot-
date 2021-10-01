@@ -91,7 +91,8 @@ public class BloggerServiceImpl implements BloggerService {
         }
 
         if (blogger.getApproved() == 1 && blogger.getIsActive() == 1) {
-            postRepository.save(postMapper.postSave(dto));
+
+            postRepository.save(postMapper.postSave(dto, blogger));
         } else {
             throw new BadRequestException("Invalid Blogger try to post a Blog-Post");
         }
