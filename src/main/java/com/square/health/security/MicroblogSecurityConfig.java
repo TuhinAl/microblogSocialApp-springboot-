@@ -1,9 +1,15 @@
 package com.square.health.security;
 
+import com.square.health.jwt.jwtFilter.JwtTokenVerifierFilter;
+import com.square.health.jwt.jwtFilter.JwtUsernamePasswordAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
@@ -14,13 +20,20 @@ import static org.springframework.http.HttpMethod.*;
  * @project health
  * @created 10/2/21 at 9:37 AM
  **/
-
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MicroblogSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    CustomBloggerDetailsService bloggerDetailsService;
+
+    @Autowired
+    JwtTokenVerifierFilter tokenVerifierFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        super.configure(auth);
+        auth.userDetailsService(bloggerDetailsService);
     }
 
     @Override
@@ -31,8 +44,8 @@ public class MicroblogSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter()
-                .addFilterAfter()
+                .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager()))
+                .addFilterAfter(new JwtTokenVerifierFilter(), JwtUsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers(POST, "/square-health/api/v1/admin").permitAll()
@@ -46,7 +59,7 @@ public class MicroblogSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated();
 
-        http.addFilterBefore()
+        http.addFilterBefore(tokenVerifierFilter, JwtUsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

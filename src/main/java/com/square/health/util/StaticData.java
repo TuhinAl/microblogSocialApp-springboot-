@@ -61,4 +61,17 @@ public interface StaticData {
     String COMMENT_DELETED = "completed deleted";
 
 
+    //=============== Security Service ================
+
+    String BLOGGER_NOT_EXIST = "This Blogger Not Exist";
+
+
+    // secret key
+    String JWT_SIGNATURE = "squarehealthdigitizehealthcareserviceinbangladesh";
+
+    //jwt service
+
+    String INVALID_TOKEN = "This token cannot be trust";
+
+
 }
