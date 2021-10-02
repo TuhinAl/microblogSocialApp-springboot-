@@ -19,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 import static com.square.health.util.StaticData.*;
 
 /**
@@ -28,6 +30,7 @@ import static com.square.health.util.StaticData.*;
  **/
 
 @Service
+@Transactional
 public class BloggerServiceImpl implements BloggerService {
 
     @Autowired
@@ -47,6 +50,24 @@ public class BloggerServiceImpl implements BloggerService {
 
     @Autowired
     PostMapper postMapper;
+
+    /**
+     * ============= Special Notes =================
+     *
+     * (1) I used custom mapper to save users (Admin, Blogger)
+     * (2) Used @Transactional annotation for successful transaction,
+     *      if any transaction (execution) fails, it will rollback to consistent state
+     * (3) Threw Exception for every 'Bad' request and if not found
+     *      any requested resource in database
+     *
+     *  (4) Returned standard Response that is also customised.
+     *
+     *   (5) Though I know Constructor injection is better than field injection
+     *          but i used it to get optimal output without any complexity and short period of time
+     *
+     *
+     */
+
 
     @Override
     public ResponseEntity<ErrorDetails> registerBlogger(BloggerDTO blogger) {
@@ -68,11 +89,14 @@ public class BloggerServiceImpl implements BloggerService {
     public ResponseEntity<ErrorDetails> addCommentToPost(Long bloggerId, String comment) {
 
         Blogger blogger = bloggerRepository.getById(bloggerId);
-        if (blogger.getId() == null) {
 
+        if (blogger.getId() == null) {
             throw new ResourceNotFoundException(INVALID_BLOGGER_ID);
         }
-
+        /**
+         * A Blogger can only comment on other bloggers' post if the
+         *  the blogger is Active and Approved (AKA Valid Blogger).
+         */
         if (blogger.getApproved() == 1 && blogger.getIsActive() == 1) {
             commentRepository.save(commentMapper.saveComment(comment, bloggerId));
         } else {
@@ -95,7 +119,9 @@ public class BloggerServiceImpl implements BloggerService {
         if (blogger.getId() == null) {
             throw new ResourceNotFoundException(INVALID_BLOGGER_ID);
         }
-
+        /**
+         * A Blogger can only Post a status if  the blogger is Active and Approved (AKA Valid Blogger).
+         */
         if (blogger.getApproved() == 1 && blogger.getIsActive() == 1) {
 
             postRepository.save(postMapper.postSave(dto, blogger));
@@ -118,14 +144,15 @@ public class BloggerServiceImpl implements BloggerService {
         if (post.getId() == null) {
             throw new ResourceNotFoundException(POST_NOT_EXIST);
         }
+        /**
+         * A Blogger can only update a status if  the blogger is Active and Approved (AKA Valid Blogger).
+         */
         if (blogger.getApproved() == 1 && blogger.getIsActive() == 1) {
             post.setPost(dto.getPost());
             postRepository.save(post);
         }else{
             throw new BadRequestException(INACTIVE_BLOGGER_API_ACCESS_DENY);
         }
-
-
 
         return new ResponseEntity<ErrorDetails>(new ErrorDetails(HttpStatus.OK.value(),
                 POST_UPDATED_MESSAGE, System.currentTimeMillis()),
@@ -134,6 +161,10 @@ public class BloggerServiceImpl implements BloggerService {
 
     @Override
     public ResponseEntity<ErrorDetails> deletePost(Long postId) {
+
+        /**
+         *  a Valid Admin and Blogger can delete the post
+         */
 
         Post post = postRepository.getById(postId);
         if (post.getId() == null) {
@@ -149,9 +180,15 @@ public class BloggerServiceImpl implements BloggerService {
     @Override
     public ResponseEntity<ErrorDetails> likePost(Long postId) {
         Post post = postRepository.getById(postId);
+
         if (post.getId() == null) {
             throw new ResourceNotFoundException(POST_NOT_EXIST);
         }
+        /**
+         * a column name 'likes' in post table contains the number of likes for
+         * a specific post
+         * if a user (Blogger) hit this API, increment the value and update
+         */
         Long likes = post.getLikes();
         post.setLikes(likes + 1);
         postRepository.save(post);
@@ -168,6 +205,11 @@ public class BloggerServiceImpl implements BloggerService {
         if (post.getId() == null) {
             throw new ResourceNotFoundException(POST_NOT_EXIST);
         }
+        /**
+         * a column name 'dislikes' in post table contains the number of dislikes
+         * for a specific post.
+         * if a user (Blogger) hit this API, increment the value and update
+         */
         Long dislikes = post.getDislikes();
         post.setDislikes(dislikes + 1);
         postRepository.save(post);

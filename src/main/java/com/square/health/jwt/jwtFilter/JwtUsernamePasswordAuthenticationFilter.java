@@ -36,17 +36,31 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request,
+                                                HttpServletResponse response) throws AuthenticationException {
 
         try {
+
+            /**
+             * read the data from requestBody (login JSON) to authenticate the  users (Admin & Blogger)
+             */
             AuthenticationRequest authenticationRequest = new ObjectMapper().readValue(request.getInputStream(), AuthenticationRequest.class);
 
+            /**
+             * Get the Principles and Subject from the Servlet request
+             */
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getUsername(),
                     authenticationRequest.getPassword());
 
+            /**
+             * Authenticate the credentials by Spring Security authenticationManager
+             */
             Authentication authenticate = authenticationManager.authenticate(authentication);
 
+            /**
+             * return authentication
+             */
             return authenticate;
 
         } catch (IOException ioException) {
@@ -61,7 +75,25 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
+        /**
+         * if the Request is authenticated then
+         * this successfulAuthentication method will execute
+         *
+         */
 
+        /**
+         * Now, generate a JWT token which contains
+         *          (1) Header,
+         *          (2) Body(payload/claims),
+         *          (3) Signature
+         *
+         *          in my scenario,
+         *          (a) Heade --> authResult
+         *          (b) Body ---> this is actual payload, or Claims, I put only Authority,
+         *               issued time, expire time in JWT body
+         *           (c) Signature --> I create a digital signature
+         *               using HMAC SHA KEY secret key algorithm wit a secret string
+         */
 
         String token = Jwts.builder()
                 .setSubject(authResult.getName())
