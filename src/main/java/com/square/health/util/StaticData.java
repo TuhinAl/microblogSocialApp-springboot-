@@ -8,6 +8,7 @@ package com.square.health.util;
 public interface StaticData {
 
     // ======================= Admin Service Static Infos =============
+
     String ADMIN_REGISTER_MESSAGE = "admin Registered successfully";
 
     String INVALID_BLOGGER_MESSAGE = "Blogger With This ID is not found";
