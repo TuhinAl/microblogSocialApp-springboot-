@@ -1,3 +1,4 @@
+/*
 package com.square.health.security;
 
 import com.square.health.model.Blogger;
@@ -16,11 +17,13 @@ import java.util.Collection;
 
 import static com.square.health.util.StaticData.BLOGGER_NOT_EXIST;
 
+*/
 /**
  * @author Alauddin Tuhin
  * @project health
  * @created 10/2/21 at 11:43 AM
- **/
+ **//*
+
 @Service
 public class CustomBloggerDetailsService implements UserDetailsService {
 
@@ -42,3 +45,4 @@ public class CustomBloggerDetailsService implements UserDetailsService {
         return new User(blogger.getEmail(), blogger.getPassword(),authorities);
     }
 }
+*/

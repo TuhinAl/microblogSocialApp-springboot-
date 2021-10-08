@@ -40,7 +40,7 @@ public class CommentController {
         return commentService.getAllCommentOfSpecificBlogger(bloggerId, page, size);
     }
 
-    @PutMapping("update/{commentId}")
+    @PutMapping("/update/{commentId}")
     ResponseEntity<ErrorDetails> updateComment(@PathVariable("commentId") Long commentId,
                                                @RequestParam("comment") String com) {
         return commentService.updateComment(commentId, com);

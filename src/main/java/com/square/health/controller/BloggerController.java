@@ -30,9 +30,9 @@ public class BloggerController {
       return  bloggerService.registerBlogger(blogger);
     }
 
-    @PostMapping("/add/comment")
-    ResponseEntity<ErrorDetails> addCommentToPost(@RequestParam Long bloggerId,
-                                                  @PathVariable String comment) {
+    @PostMapping("/add/comment/{bloggerId}")
+    ResponseEntity<ErrorDetails> addCommentToPost(@PathVariable("bloggerId") Long bloggerId,
+                                                  @RequestParam String comment) {
         return bloggerService.addCommentToPost(bloggerId, comment);
     }
 
@@ -53,8 +53,9 @@ public class BloggerController {
         return bloggerService.deletePost(postId);
     }
 
-    @PutMapping("/like/post/{postId}")
+    @PostMapping("/like/post/{postId}")
     ResponseEntity<ErrorDetails> likePost(@PathVariable("postId") Long postId) {
+        System.out.println("inside controller");
         return bloggerService.likePost(postId);
     }
 

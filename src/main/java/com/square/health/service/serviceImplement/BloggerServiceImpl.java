@@ -180,7 +180,7 @@ public class BloggerServiceImpl implements BloggerService {
     @Override
     public ResponseEntity<ErrorDetails> likePost(Long postId) {
         Post post = postRepository.getById(postId);
-
+        System.out.println("=====post======= "+post);
         if (post.getId() == null) {
             throw new ResourceNotFoundException(POST_NOT_EXIST);
         }
@@ -190,7 +190,8 @@ public class BloggerServiceImpl implements BloggerService {
          * if a user (Blogger) hit this API, increment the value and update
          */
         Long likes = post.getLikes();
-        post.setLikes(likes + 1);
+        final long newLike = likes + 1;
+        post.setLikes(newLike);
         postRepository.save(post);
 
 

@@ -1,17 +1,17 @@
 package com.square.health.security;
 
-import com.square.health.jwt.jwtFilter.JwtTokenVerifierFilter;
-import com.square.health.jwt.jwtFilter.JwtUsernamePasswordAuthenticationFilter;
+/*import com.square.health.jwt.jwtFilter.JwtTokenVerifierFilter;
+import com.square.health.jwt.jwtFilter.JwtUsernamePasswordAuthenticationFilter;*/
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
+/*import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.http.SessionCreationPolicy;*/
 
 import static org.springframework.http.HttpMethod.*;
 
@@ -20,12 +20,12 @@ import static org.springframework.http.HttpMethod.*;
  * @project health
  * @created 10/2/21 at 9:37 AM
  **/
-@Configuration
+/*@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class MicroblogSecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableGlobalMethodSecurity(prePostEnabled = true)*/
+/*public class MicroblogSecurityConfig extends WebSecurityConfigurerAdapter {*/
 
-    @Autowired
+   /* @Autowired
     CustomBloggerDetailsService bloggerDetailsService;
 
     @Autowired
@@ -65,5 +65,5 @@ public class MicroblogSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
-    }
-}
+    }*/
+/*}*/
